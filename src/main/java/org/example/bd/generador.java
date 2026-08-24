@@ -40,6 +40,9 @@ public class generador {
             personajes.add(p);
         }
 
+        int posicionImpostor = random.nextInt(personajes.size());
+        personajes.get(posicionImpostor).setImpostor(true);
+
         return personajes;
     }
 }

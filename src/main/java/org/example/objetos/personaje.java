@@ -4,6 +4,7 @@ package org.example.objetos;
 public class personaje {
     private int id;
     private String nombre;
+    private boolean impostor;
     private boolean genero;
     private boolean anteojos;
     private boolean sombrero;
@@ -19,12 +20,14 @@ public class personaje {
         this.id = id;
         this.nombre = nombre;
         this.genero = genero;
+        this.impostor = false;
         this.anteojos = anteojos;
         this.sombrero = sombrero;
         this.barba = barba;
         this.sonrisa = sonrisa;
         this.pelo_largo = pelo_largo;
     }
+
 
     public int getId() {
         return id;
@@ -40,6 +43,14 @@ public class personaje {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public boolean isImpostor() {
+        return impostor;
+    }
+
+    public void setImpostor(boolean impostor) {
+        this.impostor = impostor;
     }
 
     public boolean isGenero() {
