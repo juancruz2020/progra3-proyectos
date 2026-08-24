@@ -4,7 +4,6 @@ package org.example.objetos;
 public class personaje {
     private int id;
     private String nombre;
-    private boolean ;
     private boolean genero;
     private boolean anteojos;
     private boolean sombrero;
