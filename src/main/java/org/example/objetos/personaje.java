@@ -4,12 +4,14 @@ package org.example.objetos;
 public class personaje {
     private int id;
     private String nombre;
+    private boolean ;
     private boolean genero;
     private boolean anteojos;
     private boolean sombrero;
     private boolean barba;
     private boolean sonrisa;
     private boolean pelo_largo;
+
 
 
     public personaje(int id, String nombre, boolean genero, boolean anteojos,
