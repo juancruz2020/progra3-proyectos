@@ -1,4 +1,4 @@
 package org.example.juego;
 
-public class humanoVSia {
+public class HumanoVsIa {
 }

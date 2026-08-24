@@ -3,9 +3,9 @@ package org.example.bd;
 import java.util.ArrayList;
 import java.util.List;
 
-public class preguntas {
+public class Preguntas {
     private List<String> pregunta = new ArrayList<>();
-    private preguntas() {
+    private Preguntas() {
         pregunta.add("¿Es hombre?");
         pregunta.add("¿Tiene anteojos?");
         pregunta.add("¿Tiene sombrero?");

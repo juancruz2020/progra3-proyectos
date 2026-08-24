@@ -1,7 +1,7 @@
 package org.example.objetos;
 
 //genero 1 = mujer, 0 hombre,   el resto 1 si y 0 no
-public class personaje {
+public class Personaje {
     private int id;
     private String nombre;
     private boolean impostor;
@@ -14,7 +14,7 @@ public class personaje {
 
 
 
-    public personaje(int id, String nombre, boolean genero, boolean anteojos,
+    public Personaje(int id, String nombre, boolean genero, boolean anteojos,
                      boolean sombrero, boolean barba, boolean sonrisa,
                      boolean pelo_largo) {
         this.id = id;
