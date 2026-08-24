@@ -3,43 +3,45 @@ package org.example.bd;
 import org.example.objetos.personaje;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class generador {
 
-    ArrayList<String> nombres = new ArrayList<>(Arrays.asList(
-            "Juan", "Pedro", "Martín", "Lucas", "Mateo",
-            "Santiago", "Nicolás", "Tomás", "Diego", "Sebastián",
-            "Alejandro", "Facundo", "Gabriel", "Franco", "Agustín",
-            "Joaquín", "Bruno", "Lautaro", "Matías", "Federico",
-            "Sofía", "Martina", "Valentina", "Camila", "Lucía",
-            "María", "Julieta", "Catalina", "Agustina", "Micaela",
-            "Paula", "Florencia", "Victoria", "Emilia", "Antonella",
-            "Carolina", "Daniela", "Natalia", "Rocío", "Belén",
-            "Milagros", "Carla", "Abril", "Clara", "Renata",
-            "Josefina", "Guadalupe", "Zoe", "Malena", "Delfina"
-    ));
-
-    Random random = new Random();
-
     public List<personaje> generar() {
 
         List<personaje> personajes = new ArrayList<>();
 
-        for (int i = 1; i <= 22; i++) {
+        personajes.add(new personaje(1, "Juan", true,  false, true,  false, true,  false));
+        personajes.add(new personaje(2, "Pedro", true,  true,  false, true,  false, false));
+        personajes.add(new personaje(3, "Martín", true,  false, false, true,  true,  true));
+        personajes.add(new personaje(4, "Lucas", true,  true,  true,  false, false, true));
+        personajes.add(new personaje(5, "Mateo", true,  false, true,  true,  true,  false));
 
-            // seleccion de nombre
-            int posicion = random.nextInt(nombres.size());
-            String nombre = nombres.get(posicion);
-            nombres.remove(posicion);
+        personajes.add(new personaje(6, "Santiago", true,  true,  false, false, true,  true));
+        personajes.add(new personaje(7, "Nicolás", true,  false, false, true,  false, false));
+        personajes.add(new personaje(8, "Tomás", true,  true,  true,  true,  true,  false));
+        personajes.add(new personaje(9, "Diego", true,  false, true,  false, false, true));
+        personajes.add(new personaje(10, "Sebastián", true, true, false, true, true, true));
 
-            // Crear personaje
-            personaje p = new personaje(i, nombre, random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean());
-            personajes.add(p);
-        }
+        personajes.add(new personaje(11, "Sofía", false, true,  false, false, true,  true));
+        personajes.add(new personaje(12, "Martina", false, false, true,  false, false, true));
+        personajes.add(new personaje(13, "Valentina", false, true, true,  false, true,  false));
+        personajes.add(new personaje(14, "Camila", false, false, false, false, true,  true));
+        personajes.add(new personaje(15, "Lucía", false, true,  false, false, false, true));
 
+        personajes.add(new personaje(16, "María", false, false, true,  false, true,  false));
+        personajes.add(new personaje(17, "Julieta", false, true,  true,  false, false, true));
+        personajes.add(new personaje(18, "Catalina", false, false, false, false, true,  true));
+        personajes.add(new personaje(19, "Agustina", false, true,  false, false, false, false));
+        personajes.add(new personaje(20, "Micaela", false, false, true,  false, true,  true));
+
+        personajes.add(new personaje(21, "Paula", false, true,  true,  false, false, false));
+        personajes.add(new personaje(22, "Florencia", false, false, false, false, true,  true));
+        personajes.add(new personaje(23, "Victoria", false, true,  false, false, true,  false));
+
+        // Elegir el impostor aleatoriamente
+        Random random = new Random();
         int posicionImpostor = random.nextInt(personajes.size());
         personajes.get(posicionImpostor).setImpostor(true);
 
