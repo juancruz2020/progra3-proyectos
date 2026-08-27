@@ -1,9 +1,11 @@
 package org.example;
 
 import java.util.Scanner;
-
+import org.example.juego.*;
 public class Main {
     public static void main(String[] args) {
+
+        HumanoVsIa hvi = new HumanoVsIa();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -17,7 +19,7 @@ public class Main {
         switch (opcion) {
             case 1:
                 System.out.println("Iniciando juego...");
-                // Acá llamamos al juego jugador vs IA
+                hvi.juego();
                 break;
 
             case 2:

@@ -1,19 +1,61 @@
 package org.example.bd;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.example.objetos.Personaje;
 
 public class Preguntas {
-    private List<String> pregunta = new ArrayList<>();
-    private Preguntas() {
-        pregunta.add("¿Es hombre?");
-        pregunta.add("¿Tiene anteojos?");
-        pregunta.add("¿Tiene sombrero?");
-        pregunta.add("¿Tiene barba?");
-        pregunta.add("¿Está sonriendo?");
-        pregunta.add("¿Tiene el pelo largo?");
+
+    public static void preguntar(String caracteristica) {
+
+        switch (caracteristica) {
+            case "genero":
+                System.out.println("¿Es hombre?");
+                break;
+
+            case "anteojos":
+                System.out.println("¿Tiene anteojos?");
+                break;
+
+            case "sombrero":
+                System.out.println("¿Tiene sombrero?");
+                break;
+
+            case "barba":
+                System.out.println("¿Tiene barba?");
+                break;
+
+            case "sonrisa":
+                System.out.println("¿Está sonriendo?");
+                break;
+
+            case "pelo_largo":
+                System.out.println("¿Tiene pelo largo?");
+                break;
+        }
     }
-    public void preguntar(int i){
-        System.out.println(pregunta.get(i));
+
+    public static boolean tieneCaracteristica(Personaje personaje, String caracteristica) {
+
+    switch (caracteristica) {
+        case "genero":
+            return personaje.isGenero();
+
+        case "anteojos":
+            return personaje.isAnteojos();
+
+        case "sombrero":
+            return personaje.isSombrero();
+
+        case "barba":
+            return personaje.isBarba();
+
+        case "sonrisa":
+            return personaje.isSonrisa();
+
+        case "pelo_largo":
+            return personaje.isPelo_largo();
+
+        default:
+            return false;
     }
+}
 }
