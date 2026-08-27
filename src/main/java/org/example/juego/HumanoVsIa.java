@@ -1,79 +1,129 @@
 package org.example.juego;
 
-import org.example.algoritmo.BuscarGanador;
+import java.util.List;
+
 import org.example.algoritmo.TurnoHumano;
 import org.example.algoritmo.TurnoIa;
 import org.example.bd.Generador;
 import org.example.objetos.Personaje;
-
-import java.util.List;
+import org.example.bd.*;
 
 public class HumanoVsIa {
 
     private boolean terminado = false;
 
     private Generador generador = new Generador();
-    private BuscarGanador buscarGanador = new BuscarGanador();
+
     private TurnoHumano turnoHumano = new TurnoHumano();
     private TurnoIa turnoIa = new TurnoIa();
 
     private List<Personaje> humano;
     private List<Personaje> ia;
 
-    private Personaje personajeHumano;
+    private VentanaJuego ventana;
 
-    // Inicia el juego
+
+    // =====================================
+    // INICIAR JUEGO
+    // =====================================
+
     public void iniciarJuego() {
 
         humano = generador.generar();
         ia = generador.generar();
 
-        personajeHumano = buscarGanador.buscarImpostor(humano);
-
         terminado = false;
+
+        ventana = new VentanaJuego();
+
+        // Mostrar los personajes que tiene que descubrir el humano
+        ventana.mostrarPersonajes(ia);
+
+        // Conectar botón de preguntar
+        ventana.agregarListenerPreguntar(
+                e -> turnoHumano()
+        );
+
+        ventana.setVisible(true);
     }
 
-    // Turno del humano
-    public Personaje jugarHumano(String caracteristica, int respuesta) {
+
+    // =====================================
+    // TURNO HUMANO
+    // =====================================
+
+    private void turnoHumano() {
+
+        if (terminado) {
+            return;
+        }
+
+        String caracteristica =
+                ventana.getCaracteristica();
+
+        int respuesta =
+                ventana.pedirRespuesta();
 
         Personaje resultado =
-                turnoHumano.turno(ia, caracteristica, respuesta);
+                turnoHumano.turno(
+                        ia,
+                        caracteristica,
+                        respuesta
+                );
 
+        // Actualizar las cartas
+        ventana.mostrarPersonajes(ia);
+
+        // ¿Ganó el humano?
         if (resultado != null) {
+
             terminado = true;
+
+            ventana.mostrarMensaje(
+                    "¡Ganaste!\n" +
+                    "El impostor era: " +
+                    resultado.getNombre()
+            );
+
+            return;
         }
 
-        return resultado;
+        // Después del humano juega la IA
+        turnoIa();
     }
 
-    // Turno de la IA
-    public Personaje jugarIa() {
 
-        Personaje resultado = turnoIa.turno(humano);
+    // =====================================
+    // TURNO IA
+    // =====================================
 
-        if (resultado != null) {
-            terminado = true;
+    private void turnoIa() {
+
+        if (terminado) {
+            return;
         }
 
-        return resultado;
-    }
+        Personaje resultado =
+                turnoIa.turno(humano);
 
-    // Devuelve los personajes que está intentando descubrir el humano
-    public List<Personaje> getPersonajesIa() {
-        return ia;
-    }
+        // Mostrar la pregunta que hizo la IA
+        ventana.mostrarPreguntaIa(
+                turnoIa.getUltimaPregunta()
+        );
 
-    // Devuelve los personajes que está intentando descubrir la IA
-    public List<Personaje> getPersonajesHumano() {
-        return humano;
-    }
+        // Actualizar las cartas que está descartando la IA
+        ventana.mostrarPersonajes(humano);
 
-    // Personaje que le tocó al humano
-    public Personaje getPersonajeHumano() {
-        return personajeHumano;
-    }
+        // ¿Ganó la IA?
+        if (resultado != null) {
 
-    public boolean isTerminado() {
-        return terminado;
+            terminado = true;
+
+            ventana.mostrarMensaje(
+                    "¡La IA encontró al impostor!\n" +
+                    "Era: " +
+                    resultado.getNombre()
+            );
+        }
     }
 }

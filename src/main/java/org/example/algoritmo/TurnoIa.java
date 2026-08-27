@@ -7,21 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 
 public class TurnoIa {
 
     private List<String> preguntadas = new ArrayList<>();
-    private int largo;
-    private int probabilidad;
     private PonderadoCaracteristicas ponde = new PonderadoCaracteristicas();
     private BuscarGanador busca = new BuscarGanador();
+
     private String mayor;
+    private String ultimaPregunta;
 
     public Personaje turno(List<Personaje> personaje) {
 
-        largo = personaje.size();
-
+        int largo = personaje.size();
 
         int limite;
 
@@ -44,56 +42,82 @@ public class TurnoIa {
         Random random = new Random();
         int numero = random.nextInt(limite) + 1;
 
+        // INTENTA ADIVINAR
         if (numero == 1) {
 
-            Personaje ganador = busca.buscarImpostor(personaje);
-
-            if (ganador.getId() == personaje.get(0).getId()) {
-                return personaje.get(0);
-            } else {
-                personaje.remove(0);
+            if (personaje.isEmpty()) {
                 return null;
             }
 
-        } else {
+            Personaje ganador = busca.buscarImpostor(personaje);
 
-            Map<String, Integer> ponderaciones =
-                    ponde.que_pregunto(personaje, preguntadas);
+            if (ganador != null &&
+                    ganador.getId() == personaje.get(0).getId()) {
 
-            int valorMayor = 0;
+                return personaje.get(0);
 
-            for (String clave : ponderaciones.keySet()) {
-
-                if (ponderaciones.get(clave) > valorMayor) {
-                    valorMayor = ponderaciones.get(clave);
-                    mayor = clave;
-                }
-            }
-
-            preguntadas.add(mayor);
-
-            Preguntas.preguntar(mayor);
-
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.println("0 = Sí");
-            System.out.println("1 = No");
-
-            int respuesta = scanner.nextInt();
-
-            if (respuesta == 0) {
-                personaje.removeIf(
-                        p -> !Preguntas.tieneCaracteristica(p, mayor));
             } else {
-                personaje.removeIf(p -> Preguntas.tieneCaracteristica(p, mayor));
-            }
-            if (personaje.size() == 1) {
-                if (personaje.get(0).isImpostor()) {
-                    return personaje.get(0);
+
+                personaje.remove(0);
+                return null;
             }
         }
+
+        // ELIGE PREGUNTA
+        Map<String, Integer> ponderaciones =
+                ponde.que_pregunto(personaje, preguntadas);
+
+        mayor = "";
+        int valorMayor = 0;
+
+        for (String clave : ponderaciones.keySet()) {
+
+            if (ponderaciones.get(clave) > valorMayor) {
+                valorMayor = ponderaciones.get(clave);
+                mayor = clave;
+            }
+        }
+
+        if (mayor.equals("")) {
+            return null;
+        }
+
+        preguntadas.add(mayor);
+
+        // Guardamos la pregunta para que la ventana la muestre
+        ultimaPregunta = Preguntas.preguntar(mayor);
+
+        // Buscamos al impostor para saber automáticamente la respuesta
+        Personaje impostor = busca.buscarImpostor(personaje);
+
+        boolean respuesta =
+                Preguntas.tieneCaracteristica(impostor, mayor);
+
+        // Filtramos según la respuesta
+        if (respuesta) {
+
+            personaje.removeIf(
+                    p -> !Preguntas.tieneCaracteristica(p, mayor)
+            );
+
+        } else {
+
+            personaje.removeIf(
+                    p -> Preguntas.tieneCaracteristica(p, mayor)
+            );
+        }
+
+        // Comprobar si quedó el impostor
+        if (personaje.size() == 1 &&
+                personaje.get(0).isImpostor()) {
+
+            return personaje.get(0);
         }
 
         return null;
+    }
+
+    public String getUltimaPregunta() {
+        return ultimaPregunta;
     }
 }

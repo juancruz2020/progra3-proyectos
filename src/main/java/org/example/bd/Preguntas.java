@@ -4,58 +4,60 @@ import org.example.objetos.Personaje;
 
 public class Preguntas {
 
-    public static void preguntar(String caracteristica) {
+
+    public static String preguntar(String caracteristica) {
 
         switch (caracteristica) {
+
             case "genero":
-                System.out.println("¿Es hombre?");
-                break;
+                return "¿Es hombre?";
 
             case "anteojos":
-                System.out.println("¿Tiene anteojos?");
-                break;
+                return "¿Tiene anteojos?";
 
             case "sombrero":
-                System.out.println("¿Tiene sombrero?");
-                break;
+                return "¿Tiene sombrero?";
 
             case "barba":
-                System.out.println("¿Tiene barba?");
-                break;
+                return "¿Tiene barba?";
 
             case "sonrisa":
-                System.out.println("¿Está sonriendo?");
-                break;
+                return "¿Está sonriendo?";
 
             case "pelo_largo":
-                System.out.println("¿Tiene pelo largo?");
-                break;
+                return "¿Tiene pelo largo?";
+
+            default:
+                return "";
         }
     }
 
-    public static boolean tieneCaracteristica(Personaje personaje, String caracteristica) {
+    public static boolean tieneCaracteristica(
+            Personaje personaje,
+            String caracteristica) {
 
-    switch (caracteristica) {
-        case "genero":
-            return personaje.isGenero();
+        switch (caracteristica) {
 
-        case "anteojos":
-            return personaje.isAnteojos();
+            case "genero":
+                return personaje.isGenero();
 
-        case "sombrero":
-            return personaje.isSombrero();
+            case "anteojos":
+                return personaje.isAnteojos();
 
-        case "barba":
-            return personaje.isBarba();
+            case "sombrero":
+                return personaje.isSombrero();
 
-        case "sonrisa":
-            return personaje.isSonrisa();
+            case "barba":
+                return personaje.isBarba();
 
-        case "pelo_largo":
-            return personaje.isPelo_largo();
+            case "sonrisa":
+                return personaje.isSonrisa();
 
-        default:
-            return false;
+            case "pelo_largo":
+                return personaje.isPelo_largo();
+
+            default:
+                return false;
+        }
     }
-}
 }
