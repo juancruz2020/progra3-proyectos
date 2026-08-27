@@ -10,37 +10,70 @@ import java.util.List;
 
 public class HumanoVsIa {
 
-    private boolean flag = false;
-    Generador generador = new Generador();
-    BuscarGanador buscarGanador = new BuscarGanador();
-    TurnoHumano turnoHumano = new TurnoHumano();
+    private boolean terminado = false;
 
-    public void juego() {
-        List<Personaje> humano = generador.generar();
-        List<Personaje> ia = generador.generar();
+    private Generador generador = new Generador();
+    private BuscarGanador buscarGanador = new BuscarGanador();
+    private TurnoHumano turnoHumano = new TurnoHumano();
+    private TurnoIa turnoIa = new TurnoIa();
 
-        Personaje ganadorHumano = buscarGanador.buscarImpostor(humano);
+    private List<Personaje> humano;
+    private List<Personaje> ia;
 
-        System.out.println("El personaje seleccionado es: " + ganadorHumano.getId());
+    private Personaje personajeHumano;
 
-        TurnoIa turnoIa = new TurnoIa();
+    // Inicia el juego
+    public void iniciarJuego() {
 
-        while (!flag) {
+        humano = generador.generar();
+        ia = generador.generar();
 
-            Personaje resultadoHumano = turnoHumano.turno(ia);
+        personajeHumano = buscarGanador.buscarImpostor(humano);
 
-            if (resultadoHumano != null) {
-                System.out.println("¡El humano encontró al impostor: " + resultadoHumano.getNombre());
-                flag = true;
-                break;
-            }
+        terminado = false;
+    }
 
-            Personaje resultado = turnoIa.turno(ia);
+    // Turno del humano
+    public Personaje jugarHumano(String caracteristica, int respuesta) {
 
-            if (resultado != null) {
-                System.out.println("La IA encontró al impostor: "+ resultado.getNombre());
-                flag = true;
-            }
+        Personaje resultado =
+                turnoHumano.turno(ia, caracteristica, respuesta);
+
+        if (resultado != null) {
+            terminado = true;
         }
+
+        return resultado;
+    }
+
+    // Turno de la IA
+    public Personaje jugarIa() {
+
+        Personaje resultado = turnoIa.turno(humano);
+
+        if (resultado != null) {
+            terminado = true;
+        }
+
+        return resultado;
+    }
+
+    // Devuelve los personajes que está intentando descubrir el humano
+    public List<Personaje> getPersonajesIa() {
+        return ia;
+    }
+
+    // Devuelve los personajes que está intentando descubrir la IA
+    public List<Personaje> getPersonajesHumano() {
+        return humano;
+    }
+
+    // Personaje que le tocó al humano
+    public Personaje getPersonajeHumano() {
+        return personajeHumano;
+    }
+
+    public boolean isTerminado() {
+        return terminado;
     }
 }

@@ -87,6 +87,11 @@ public class TurnoIa {
             } else {
                 personaje.removeIf(p -> Preguntas.tieneCaracteristica(p, mayor));
             }
+            if (personaje.size() == 1) {
+                if (personaje.get(0).isImpostor()) {
+                    return personaje.get(0);
+            }
+        }
         }
 
         return null;
