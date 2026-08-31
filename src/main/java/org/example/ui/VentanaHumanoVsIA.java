@@ -20,7 +20,7 @@ public class VentanaHumanoVsIA extends JFrame {
     private final JComboBox<Filtro> comboFiltro = new JComboBox<>(Filtro.values());
     private final JComboBox<Personaje> comboAdivinar = new JComboBox<>();
     private final JLabel labelEstado = new JLabel("Elegí tu personaje secreto (clic en una tarjeta)", SwingConstants.CENTER);
-    private final JLabel labelSecreto = new JLabel(" ", SwingConstants.CENTER);
+    private final JPanel panelSecreto = new JPanel();
 
     public VentanaHumanoVsIA() {
         super("Humano vs IA");
@@ -70,10 +70,10 @@ public class VentanaHumanoVsIA extends JFrame {
         panelAcciones.add(comboAdivinar);
         panelAcciones.add(btnAdivinar);
 
-        labelSecreto.setFont(labelSecreto.getFont().deriveFont(Font.BOLD, 14f));
+        panelSecreto.setBorder(BorderFactory.createTitledBorder("Tu secreto"));
 
         JPanel panelSuperior = new JPanel(new BorderLayout());
-        panelSuperior.add(labelSecreto, BorderLayout.NORTH);
+        panelSuperior.add(panelSecreto, BorderLayout.NORTH);
         panelSuperior.add(panelAcciones, BorderLayout.SOUTH);
         panel.add(panelSuperior, BorderLayout.NORTH);
 
@@ -89,7 +89,10 @@ public class VentanaHumanoVsIA extends JFrame {
         }
 
         partida.iniciar(personaje);
-        labelSecreto.setText("Tu secreto: " + personaje.getNombre());
+        panelSecreto.removeAll();
+        panelSecreto.add(PanelTableroPersonajes.crearTarjetaEstatica(personaje, 140));
+        panelSecreto.revalidate();
+        panelSecreto.repaint();
         panelCandidatos.mostrar(partida.getCandidatosHumano());
         labelEstado.setText("Tu turno — tratá de adivinar el secreto de la IA");
         log("Elegiste tu secreto. Empieza la partida.");
