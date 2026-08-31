@@ -1,10 +1,9 @@
 package org.example.objetos;
 
-//genero 1 = mujer, 0 hombre,   el resto 1 si y 0 no
+// genero: true = hombre, false = mujer. El resto: true = sí, false = no.
 public class Personaje {
     private int id;
     private String nombre;
-    private boolean impostor;
     private boolean genero;
     private boolean anteojos;
     private boolean sombrero;
@@ -12,22 +11,18 @@ public class Personaje {
     private boolean sonrisa;
     private boolean pelo_largo;
 
-
-
     public Personaje(int id, String nombre, boolean genero, boolean anteojos,
                      boolean sombrero, boolean barba, boolean sonrisa,
                      boolean pelo_largo) {
         this.id = id;
         this.nombre = nombre;
         this.genero = genero;
-        this.impostor = false;
         this.anteojos = anteojos;
         this.sombrero = sombrero;
         this.barba = barba;
         this.sonrisa = sonrisa;
         this.pelo_largo = pelo_largo;
     }
-
 
     public int getId() {
         return id;
@@ -43,14 +38,6 @@ public class Personaje {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public boolean isImpostor() {
-        return impostor;
-    }
-
-    public void setImpostor(boolean impostor) {
-        this.impostor = impostor;
     }
 
     public boolean isGenero() {
@@ -99,5 +86,10 @@ public class Personaje {
 
     public void setPelo_largo(boolean pelo_largo) {
         this.pelo_largo = pelo_largo;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

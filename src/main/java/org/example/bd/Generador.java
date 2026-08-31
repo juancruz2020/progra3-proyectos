@@ -4,10 +4,12 @@ import org.example.objetos.Personaje;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Generador {
 
+    // Los personajes arrancan agrupados únicamente por género (hombres, después mujeres),
+    // sin ningún orden alfabético dentro de cada bloque. Ordenarlos es tarea del algoritmo
+    // de divide y conquista (ver algoritmo.OrdenadorMergeSort).
     public List<Personaje> generar() {
 
         List<Personaje> personajes = new ArrayList<>();
@@ -39,11 +41,6 @@ public class Generador {
         personajes.add(new Personaje(21, "Paula", false, true,  true,  false, false, false));
         personajes.add(new Personaje(22, "Florencia", false, false, false, false, true,  true));
         personajes.add(new Personaje(23, "Victoria", false, true,  false, false, true,  false));
-
-        // Elegir el impostor aleatoriamente
-        Random random = new Random();
-        int posicionImpostor = random.nextInt(personajes.size());
-        personajes.get(posicionImpostor).setImpostor(true);
 
         return personajes;
     }
