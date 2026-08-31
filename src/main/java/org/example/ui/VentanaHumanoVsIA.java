@@ -20,6 +20,7 @@ public class VentanaHumanoVsIA extends JFrame {
     private final JComboBox<Filtro> comboFiltro = new JComboBox<>(Filtro.values());
     private final JComboBox<Personaje> comboAdivinar = new JComboBox<>();
     private final JLabel labelEstado = new JLabel("Elegí tu personaje secreto (clic en una tarjeta)", SwingConstants.CENTER);
+    private final JLabel labelSecreto = new JLabel(" ", SwingConstants.CENTER);
 
     public VentanaHumanoVsIA() {
         super("Humano vs IA");
@@ -44,7 +45,11 @@ public class VentanaHumanoVsIA extends JFrame {
 
     private JPanel construirPanelJuego() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JScrollPane(panelCandidatos), BorderLayout.CENTER);
+
+        JPanel panelTablero = new JPanel(new BorderLayout());
+        panelTablero.setBorder(BorderFactory.createTitledBorder("Candidatos restantes para adivinar el secreto de la IA"));
+        panelTablero.add(new JScrollPane(panelCandidatos), BorderLayout.CENTER);
+        panel.add(panelTablero, BorderLayout.CENTER);
 
         areaLog.setEditable(false);
         JScrollPane scrollLog = new JScrollPane(areaLog);
@@ -65,7 +70,13 @@ public class VentanaHumanoVsIA extends JFrame {
         panelAcciones.add(comboAdivinar);
         panelAcciones.add(btnAdivinar);
 
-        panel.add(panelAcciones, BorderLayout.NORTH);
+        labelSecreto.setFont(labelSecreto.getFont().deriveFont(Font.BOLD, 14f));
+
+        JPanel panelSuperior = new JPanel(new BorderLayout());
+        panelSuperior.add(labelSecreto, BorderLayout.NORTH);
+        panelSuperior.add(panelAcciones, BorderLayout.SOUTH);
+        panel.add(panelSuperior, BorderLayout.NORTH);
+
         return panel;
     }
 
@@ -78,7 +89,8 @@ public class VentanaHumanoVsIA extends JFrame {
         }
 
         partida.iniciar(personaje);
-        panelCandidatos.mostrar(partida.getCandidatosMaquina());
+        labelSecreto.setText("Tu secreto: " + personaje.getNombre());
+        panelCandidatos.mostrar(partida.getCandidatosHumano());
         labelEstado.setText("Tu turno — tratá de adivinar el secreto de la IA");
         log("Elegiste tu secreto. Empieza la partida.");
         cardLayout.show(panelCentral, "juego");
@@ -88,7 +100,7 @@ public class VentanaHumanoVsIA extends JFrame {
         Filtro filtro = (Filtro) comboFiltro.getSelectedItem();
         boolean respuesta = partida.humanoPregunta(filtro);
         log("Preguntaste \"" + filtro.getPregunta() + "\" -> " + (respuesta ? "Sí" : "No"));
-        panelCandidatos.mostrar(partida.getCandidatosMaquina());
+        panelCandidatos.mostrar(partida.getCandidatosHumano());
         turnoDeLaMaquina();
     }
 
