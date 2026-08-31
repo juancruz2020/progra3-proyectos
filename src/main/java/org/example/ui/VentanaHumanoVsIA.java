@@ -34,8 +34,8 @@ public class VentanaHumanoVsIA extends JFrame {
         panelCentral.add(new JScrollPane(panelSeleccion), "seleccion");
         panelCentral.add(construirPanelJuego(), "juego");
 
-        panelSeleccion.mostrar(partida.getTablero());
         panelSeleccion.setOnClick(this::elegirSecreto);
+        panelSeleccion.mostrar(partida.getTablero());
 
         for (Personaje p : partida.getTablero()) {
             comboAdivinar.addItem(p);

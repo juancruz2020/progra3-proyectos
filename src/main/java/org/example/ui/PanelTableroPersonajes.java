@@ -22,6 +22,9 @@ public class PanelTableroPersonajes extends JPanel {
 
     public void setOnClick(Consumer<Personaje> onClick) {
         this.onClick = onClick;
+        for (Component componente : getComponents()) {
+            componente.setEnabled(onClick != null);
+        }
     }
 
     public void mostrar(List<Personaje> personajes) {
@@ -46,11 +49,14 @@ public class PanelTableroPersonajes extends JPanel {
         boton.setHorizontalAlignment(SwingConstants.LEFT);
         boton.setMargin(new Insets(6, 6, 6, 6));
 
-        if (onClick != null) {
-            boton.addActionListener(e -> onClick.accept(p));
-        } else {
-            boton.setEnabled(false);
-        }
+        // Se consulta "onClick" recién al hacer click (no al crear la tarjeta),
+        // así no importa si setOnClick() se llamó antes o después de mostrar().
+        boton.setEnabled(onClick != null);
+        boton.addActionListener(e -> {
+            if (onClick != null) {
+                onClick.accept(p);
+            }
+        });
         return boton;
     }
 
