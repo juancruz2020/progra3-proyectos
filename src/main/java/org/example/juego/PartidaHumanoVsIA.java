@@ -25,9 +25,16 @@ public class PartidaHumanoVsIA {
     private String resultado = "";
 
     public PartidaHumanoVsIA() {
-        Trazador.seccion("Nueva partida: Humano vs IA");
-        List<Personaje> generados = new Generador().generar();
-        this.tablero = new OrdenadorMergeSort().ordenar(generados);
+
+        Trazador.seccion(
+                "Nueva partida: Humano vs IA"
+        );
+
+        List<Personaje> generados =
+                new Generador().generar();
+
+        this.tablero =
+                new OrdenadorMergeSort().ordenar(generados);
     }
 
     public List<Personaje> getTablero() {
@@ -35,11 +42,23 @@ public class PartidaHumanoVsIA {
     }
 
     public void iniciar(Personaje secretoHumano) {
+
         humano.setSecreto(secretoHumano);
-        maquina.elegirSecreto(tablero, secretoHumano);
+
+        maquina.elegirSecreto(
+                tablero,
+                secretoHumano
+        );
+
         maquina.iniciarBusqueda(tablero);
-        candidatosHumano = new ArrayList<>(tablero);
-        Trazador.log("Humano eligió su secreto: " + secretoHumano.getNombre());
+
+        candidatosHumano =
+                new ArrayList<>(tablero);
+
+        Trazador.log(
+                "Humano eligió su secreto: "
+                        + secretoHumano.getNombre()
+        );
     }
 
     public List<Personaje> getCandidatosHumano() {
@@ -60,51 +79,132 @@ public class PartidaHumanoVsIA {
 
     // El humano pregunta un filtro sobre el secreto de la IA.
     public boolean humanoPregunta(Filtro filtro) {
-        boolean respuesta = maquina.responder(filtro);
-        candidatosHumano.removeIf(p -> filtro.valorDe(p) != respuesta);
-        Trazador.log("Humano pregunta \"" + filtro.getPregunta() + "\" -> " + (respuesta ? "Sí" : "No")
-                + " (le quedan " + candidatosHumano.size() + " candidatos)");
+
+        boolean respuesta =
+                maquina.responder(filtro);
+
+        candidatosHumano.removeIf(
+                p -> filtro.valorDe(p) != respuesta
+        );
+
+        Trazador.log(
+                "Humano pregunta \""
+                        + filtro.getPregunta()
+                        + "\" -> "
+                        + (respuesta ? "Sí" : "No")
+                        + " (le quedan "
+                        + candidatosHumano.size()
+                        + " candidatos)"
+        );
+
         return respuesta;
     }
 
-    // El humano lanza su suposición. Devuelve true si acertó (gana la partida).
+    // El humano lanza su suposición.
     public boolean humanoAdivina(String nombre) {
-        Personaje candidato = buscador.buscar(tablero, nombre);
-        boolean acierto = candidato != null && maquina.esElSecreto(candidato);
+
+        Personaje candidato =
+                buscador.buscar(tablero, nombre);
+
+        boolean acierto =
+                candidato != null
+                        && maquina.esElSecreto(candidato);
+
         terminada = true;
+
         resultado = acierto
-                ? "¡Ganaste! El secreto de la IA era " + maquina.getSecretoParaMostrar().getNombre() + "."
-                : "Perdiste. El secreto de la IA era " + maquina.getSecretoParaMostrar().getNombre() + ".";
-        Trazador.log("Humano adivina \"" + nombre + "\" -> " + (acierto ? "ACIERTO" : "ERROR"));
+                ? "¡Ganaste! El secreto de la IA era "
+                + maquina.getSecretoParaMostrar().getNombre()
+                + "."
+                : "Perdiste. El secreto de la IA era "
+                + maquina.getSecretoParaMostrar().getNombre()
+                + ".";
+
+        Trazador.log(
+                "Humano adivina \""
+                        + nombre
+                        + "\" -> "
+                        + (acierto ? "ACIERTO" : "ERROR")
+        );
+
         return acierto;
     }
 
-    // La IA elige, con el algoritmo greedy, la mejor pregunta sobre su lista de candidatos.
+    // La IA elige, con el algoritmo greedy,
+    // la mejor pregunta sobre su lista de candidatos.
     public Filtro maquinaElegirPregunta() {
         return maquina.elegirMejorPregunta();
     }
 
-    // La UI le pasa la respuesta honesta que dio el humano a la pregunta de la IA.
-    public void maquinaRecibirRespuesta(Filtro filtro, boolean respuesta) {
-        maquina.filtrarCandidatos(filtro, respuesta);
-        Trazador.log("IA pregunta \"" + filtro.getPregunta() + "\" -> " + (respuesta ? "Sí" : "No")
-                + " (le quedan " + maquina.getCandidatosRestantes().size() + " candidatos)");
+    // Nuevo: permite a la UI mostrar el análisis realizado por Greedy.
+    public String getAnalisisIA() {
+        return maquina.getUltimoAnalisis();
+    }
+
+    // La UI le pasa la respuesta honesta que dio el humano
+    // a la pregunta de la IA.
+    public void maquinaRecibirRespuesta(
+            Filtro filtro,
+            boolean respuesta) {
+
+        maquina.filtrarCandidatos(
+                filtro,
+                respuesta
+        );
+
+        Trazador.log(
+                "IA pregunta \""
+                        + filtro.getPregunta()
+                        + "\" -> "
+                        + (respuesta ? "Sí" : "No")
+                        + " (le quedan "
+                        + maquina.getCandidatosRestantes().size()
+                        + " candidatos)"
+        );
+    }
+
+    // Nuevo: permite a la UI mostrar cómo quedó
+    // la lista después del filtro.
+    public String getFiltradoIA() {
+        return maquina.getUltimoFiltrado();
     }
 
     public boolean maquinaListaParaAdivinar() {
         return maquina.getCandidatosRestantes().size() <= 1;
     }
 
-    // La IA lanza su suposición. Devuelve true si acertó (gana la IA, pierde el humano).
+    // La IA lanza su suposición.
     public boolean maquinaAdivina() {
-        Personaje candidato = maquina.getCandidatoMasProbable();
-        boolean acierto = candidato != null && humano.esElSecreto(candidato);
+
+        Personaje candidato =
+                maquina.getCandidatoMasProbable();
+
+        boolean acierto =
+                candidato != null
+                        && humano.esElSecreto(candidato);
+
         terminada = true;
-        String nombreAdivinado = candidato != null ? candidato.getNombre() : "(sin candidatos)";
+
+        String nombreAdivinado =
+                candidato != null
+                        ? candidato.getNombre()
+                        : "(sin candidatos)";
+
         resultado = acierto
-                ? "La IA adivinó tu secreto: " + nombreAdivinado + ". ¡Perdiste!"
-                : "La IA falló su suposición (" + nombreAdivinado + "). ¡Ganaste!";
-        Trazador.log("IA adivina \"" + nombreAdivinado + "\" -> " + (acierto ? "ACIERTO" : "ERROR"));
+                ? "La IA adivinó tu secreto: "
+                + nombreAdivinado
+                + ". ¡Perdiste!"
+                : "La IA falló su suposición ("
+                + nombreAdivinado
+                + "). ¡Ganaste!";
+
+        Trazador.log(
+                "IA adivina \""
+                        + nombreAdivinado
+                        + "\" -> "
+                        + (acierto ? "ACIERTO" : "ERROR")
+        );
+
         return acierto;
     }
 }
